@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Usuarios - Sistema de Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Sistema de Gestión</h1>
+            <ul class="nav-links">
+                <li><a href="home.html">Inicio</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="listadoUsuarios.html" class="active">Usuarios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: #2c3e50; font-size: 2rem;">
+            Listado de Usuarios
+        </h2>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <p style="color: #666; margin: 0;">Total de usuarios: <strong>8</strong></p>
+            <button class="btn btn-primary">+ Agregar Usuario</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Juan Pérez González</td>
+                        <td>juan.perez@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-01-15</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>María García López</td>
+                        <td>maria.garcia@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-02-03</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Carlos Rodríguez Martínez</td>
+                        <td>carlos.rodriguez@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-02-20</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td>Ana Fernández Torres</td>
+                        <td>ana.fernandez@example.com</td>
+                        <td><span style="background-color: #f39c12; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Inactivo</span></td>
+                        <td>2024-03-05</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>005</td>
+                        <td>Luis Jiménez Sánchez</td>
+                        <td>luis.jimenez@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-03-12</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>006</td>
+                        <td>Rosa López Navarro</td>
+                        <td>rosa.lopez@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-03-28</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>007</td>
+                        <td>Miguel Álvarez Ruiz</td>
+                        <td>miguel.alvarez@example.com</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Activo</span></td>
+                        <td>2024-04-10</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>008</td>
+                        <td>Laura García Moreno</td>
+                        <td>laura.garcia@example.com</td>
+                        <td><span style="background-color: #f39c12; color: white; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.9rem;">Inactivo</span></td>
+                        <td>2024-04-22</td>
+                        <td>
+                            <button class="btn" style="background-color: #3498db; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Editar</button>
+                            <button class="btn" style="background-color: #e74c3c; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; color: #666;">
+            <p>Página 1 de 1 | Mostrando 8 de 8 usuarios</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sistema de Gestión de Usuarios. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('Agregar')) {
+                    alert('Formulario para agregar nuevo usuario');
+                } else if (this.textContent.includes('Editar')) {
+                    alert('Editando usuario...');
+                } else if (this.textContent.includes('Eliminar')) {
+                    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+                        alert('Usuario eliminado');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

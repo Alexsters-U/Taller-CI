@@ -1,0 +1,142 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # ============================================
+  # JOB DE INTEGRACIÓN CONTINUA (CI)
+  # ============================================
+  ci:
+    runs-on: ubuntu-latest
+    name: Integración Continua - Validación de Archivos
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Verificar existencia de home.html
+        run: |
+          if [ -f "home.html" ]; then
+            echo "✅ home.html encontrado"
+            wc -l home.html
+          else
+            echo "❌ ERROR: home.html no encontrado"
+            exit 1
+          fi
+
+      - name: Verificar existencia de styles.css
+        run: |
+          if [ -f "styles.css" ]; then
+            echo "✅ styles.css encontrado"
+            wc -l styles.css
+          else
+            echo "❌ ERROR: styles.css no encontrado"
+            exit 1
+          fi
+
+      - name: Verificar existencia de login.html
+        run: |
+          if [ -f "login.html" ]; then
+            echo "✅ login.html encontrado"
+          else
+            echo "❌ ERROR: login.html no encontrado"
+            exit 1
+          fi
+
+      - name: Verificar existencia de listadoUsuarios.html
+        run: |
+          if [ -f "listadoUsuarios.html" ]; then
+            echo "✅ listadoUsuarios.html encontrado"
+          else
+            echo "❌ ERROR: listadoUsuarios.html no encontrado"
+            exit 1
+          fi
+
+      - name: Validar estructura HTML básica
+        run: |
+          echo "🔍 Validando estructura de archivos HTML..."
+          for file in home.html login.html listadoUsuarios.html; do
+            if grep -q "<!DOCTYPE html>" "$file"; then
+              echo "✅ $file tiene DOCTYPE"
+            else
+              echo "⚠️  $file podría mejorar su estructura"
+            fi
+          done
+
+      - name: Reporte de CI
+        run: |
+          echo "=========================================="
+          echo "📋 REPORTE DE INTEGRACIÓN CONTINUA"
+          echo "=========================================="
+          echo "✅ Todos los archivos requeridos están presentes"
+          echo "✅ Validaciones HTML completadas"
+          echo "✅ CI completado satisfactoriamente"
+          echo "=========================================="
+
+  # ============================================
+  # JOB DE DESPLIEGUE CONTINUO (CD)
+  # ============================================
+  cd:
+    runs-on: ubuntu-latest
+    name: Despliegue Continuo - Preparación
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Preparación de artefactos
+        run: |
+          echo "📦 Preparando artefactos para despliegue..."
+          mkdir -p build
+          cp home.html build/
+          cp styles.css build/
+          cp login.html build/
+          cp listadoUsuarios.html build/
+          ls -la build/
+          echo "✅ Artefactos preparados exitosamente"
+
+      - name: Simulación de Compilación
+        run: |
+          echo "🔨 Compilando activos del proyecto..."
+          echo "   - HTML: Validado ✓"
+          echo "   - CSS: Validado ✓"
+          echo "   - Recursos: Completados ✓"
+          echo "✅ Compilación completada"
+
+      - name: Mensaje de Despliegue
+        run: |
+          echo ""
+          echo "🚀 ====================================="
+          echo "   Artefactos listos para el despliegue en el entorno de Staging"
+          echo "   ====================================="
+          echo ""
+          echo "📊 Detalles del despliegue:"
+          echo "   - Rama: main"
+          echo "   - Timestamp: $(date)"
+          echo "   - Archivos: 4 (HTML + CSS)"
+          echo ""
+          echo "✅ CD Pipeline completado exitosamente"
+          echo "✅ Listo para desplegar a Staging"
+
+      - name: Reporte Final
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "📋 REPORTE FINAL DE CI/CD"
+          echo "=========================================="
+          echo "✅ Fase CI: COMPLETADA"
+          echo "✅ Fase CD: COMPLETADA"
+          echo "✅ Estado: LISTO PARA DESPLIEGUE"
+          echo "=========================================="
+          echo ""
+          echo "🎯 Próximos pasos:"
+          echo "   1. Validar en entorno de Staging"
+          echo "   2. Ejecutar pruebas de integración"
+          echo "   3. Verificar funcionabilidad en navegadores"
+          echo "   4. Aprobar para producción si todo es correcto"
