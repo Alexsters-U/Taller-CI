@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD + GitHub Pages
 
 on:
   push:
@@ -6,56 +6,39 @@ on:
   pull_request:
     branches: [ main ]
 
+# Permisos obligatorios para GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evitar ejecuciones concurrentes
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   ci:
     runs-on: ubuntu-latest
     name: Integración Continua - Validación de Archivos
-
+    # Solo ejecuta CI en push o PR
     steps:
       - name: Checkout del código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Verificar existencia de home.html
+      - name: Verificar existencia de archivos
         run: |
-          if [ -f "home.html" ]; then
-            echo "✅ home.html encontrado"
-            wc -l home.html
-          else
-            echo "❌ ERROR: home.html no encontrado"
-            exit 1
-          fi
-
-      - name: Verificar existencia de styles.css
-        run: |
-          if [ -f "styles.css" ]; then
-            echo "✅ styles.css encontrado"
-            wc -l styles.css
-          else
-            echo "❌ ERROR: styles.css no encontrado"
-            exit 1
-          fi
-
-      - name: Verificar existencia de login.html
-        run: |
-          if [ -f "login.html" ]; then
-            echo "✅ login.html encontrado"
-          else
-            echo "❌ ERROR: login.html no encontrado"
-            exit 1
-          fi
-
-      - name: Verificar existencia de listadoUsuarios.html
-        run: |
-          if [ -f "listadoUsuarios.html" ]; then
-            echo "✅ listadoUsuarios.html encontrado"
-          else
-            echo "❌ ERROR: listadoUsuarios.html no encontrado"
-            exit 1
-          fi
+          for file in home.html styles.css login.html listadoUsuarios.html; do
+            if [ -f "$file" ]; then
+              echo "✅ $file encontrado"
+            else
+              echo "❌ ERROR: $file no encontrado"
+              exit 1
+            fi
+          done
 
       - name: Validar estructura HTML básica
         run: |
-          echo "🔍 Validando estructura de archivos HTML..."
           for file in home.html login.html listadoUsuarios.html; do
             if grep -q "<!DOCTYPE html>" "$file"; then
               echo "✅ $file tiene DOCTYPE"
@@ -64,100 +47,34 @@ jobs:
             fi
           done
 
-      - name: Reporte de CI
-        run: |
-          echo "=========================================="
-          echo "📋 REPORTE DE INTEGRACIÓN CONTINUA"
-          echo "=========================================="
-          echo "✅ Todos los archivos requeridos están presentes"
-          echo "✅ Validaciones HTML completadas"
-          echo "✅ CI completado satisfactoriamente"
-          echo "=========================================="
-
-
-  cd:
+  deploy-pages:
     runs-on: ubuntu-latest
-    name: Despliegue Continuo - Preparación
+    name: Despliegue Real a GitHub Pages
     needs: ci
+    # Solo despliega en push a main (no en PRs)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Preparación de artefactos
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Preparar artefactos (opcional, pero recomendado)
         run: |
-          echo "📦 Preparando artefactos para despliegue..."
-          mkdir -p build
-          cp home.html build/
-          cp styles.css build/
-          cp login.html build/
-          cp listadoUsuarios.html build/
-          ls -la build/
-          echo "✅ Artefactos preparados exitosamente"
+          mkdir -p dist
+          cp home.html styles.css login.html listadoUsuarios.html dist/
+          echo "📦 Artefactos listos en carpeta dist/"
 
-      - name: Simulación de Compilación
-        run: |
-          echo "🔨 Compilando activos del proyecto..."
-          echo "   - HTML: Validado ✓"
-          echo "   - CSS: Validado ✓"
-          echo "   - Recursos: Completados ✓"
-          echo "✅ Compilación completada"
+      - name: Subir artefacto a GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dist'  # Cambia a '.' si quieres subir todo el repo raíz
 
-      - name: Mensaje de Despliegue
-        run: |
-          echo ""
-          echo "🚀 ====================================="
-          echo "   Artefactos listos para el despliegue en el entorno de Staging"
-          echo "   ====================================="
-          echo ""
-          echo "📊 Detalles del despliegue:"
-          echo "   - Rama: main"
-          echo "   - Timestamp: $(date)"
-          echo "   - Archivos: 4 (HTML + CSS)"
-          echo ""
-          echo "✅ CD Pipeline completado exitosamente"
-          echo "✅ Listo para desplegar a Staging"
-
-      - name: Reporte Final
-        run: |
-          echo ""
-          echo "=========================================="
-          echo "📋 REPORTE FINAL DE CI/CD"
-          echo "=========================================="
-          echo "✅ Fase CI: COMPLETADA"
-          echo "✅ Fase CD: COMPLETADA"
-          echo "✅ Estado: LISTO PARA DESPLIEGUE"
-          echo "=========================================="
-
-  desplegar_pagina:
-    runs-on: ubuntu-latest
-    name: Despliegue a Staging
-    needs: cd
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
-
-      - name: Simulación de Despliegue a Staging
-        run: |
-          echo ":D Desplegando artefactos a Staging..."
-          echo "   - Conectando al servidor de Staging..."
-          sleep 2
-          echo "   - Subiendo archivos..."
-          sleep 2
-          echo "   - Verificando despliegue..."
-          sleep 2
-          echo "✅ Despliegue a Staging completado exitosamente"
-
-      - name: Reporte de Despliegue
-        run: |
-          echo ""
-          echo "=========================================="
-          echo "📋 REPORTE DE DESPLIEGUE"
-          echo "=========================================="
-          echo "✅ Despliegue a Staging: COMPLETADO"
-          echo "✅ Estado del entorno de Staging: ESTABLE"
-          echo "✅ Listo para pruebas en Staging"
-          echo "=========================================="
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
