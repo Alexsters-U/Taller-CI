@@ -7,9 +7,6 @@ on:
     branches: [ main ]
 
 jobs:
-  # ============================================
-  # JOB DE INTEGRACIÓN CONTINUA (CI)
-  # ============================================
   ci:
     runs-on: ubuntu-latest
     name: Integración Continua - Validación de Archivos
@@ -77,9 +74,7 @@ jobs:
           echo "✅ CI completado satisfactoriamente"
           echo "=========================================="
 
-  # ============================================
-  # JOB DE DESPLIEGUE CONTINUO (CD)
-  # ============================================
+
   cd:
     runs-on: ubuntu-latest
     name: Despliegue Continuo - Preparación
@@ -134,9 +129,35 @@ jobs:
           echo "✅ Fase CD: COMPLETADA"
           echo "✅ Estado: LISTO PARA DESPLIEGUE"
           echo "=========================================="
+
+  desplegar_pagina:
+    runs-on: ubuntu-latest
+    name: Despliegue a Staging
+    needs: cd
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Simulación de Despliegue a Staging
+        run: |
+          echo ":D Desplegando artefactos a Staging..."
+          echo "   - Conectando al servidor de Staging..."
+          sleep 2
+          echo "   - Subiendo archivos..."
+          sleep 2
+          echo "   - Verificando despliegue..."
+          sleep 2
+          echo "✅ Despliegue a Staging completado exitosamente"
+
+      - name: Reporte de Despliegue
+        run: |
           echo ""
-          echo "🎯 Próximos pasos:"
-          echo "   1. Validar en entorno de Staging"
-          echo "   2. Ejecutar pruebas de integración"
-          echo "   3. Verificar funcionabilidad en navegadores"
-          echo "   4. Aprobar para producción si todo es correcto"
+          echo "=========================================="
+          echo "📋 REPORTE DE DESPLIEGUE"
+          echo "=========================================="
+          echo "✅ Despliegue a Staging: COMPLETADO"
+          echo "✅ Estado del entorno de Staging: ESTABLE"
+          echo "✅ Listo para pruebas en Staging"
+          echo "=========================================="
